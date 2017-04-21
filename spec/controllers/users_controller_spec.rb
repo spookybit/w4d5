@@ -43,4 +43,19 @@ RSpec.describe UsersController, type: :controller do
       expect(current_user.username).to be("Hank")
     end
   end
+
+  describe "GET #show" do
+    it "displays the user" do
+      user = User.create(username: "Hank", password: "password")
+      get :show, id: user.id
+
+      expect(response).to be('show')
+    end
+
+    it "sends error message if user not found" do
+      get :show, id: -1
+      expect(response).to render_template("index")
+      expect(flash[:errors]).to be_present
+    end
+  end
 end
