@@ -34,7 +34,7 @@ RSpec.describe UsersController, type: :controller do
     it "redirects upon successful signup" do
       post :create, user: {username: "Hank", password: "password"}
 
-      expect(response).to redirect_to(goals_url)
+      expect(response).to redirect_to(user_url(current_user.id))
     end
 
     it "signs new user in" do
@@ -49,13 +49,16 @@ RSpec.describe UsersController, type: :controller do
       user = User.create(username: "Hank", password: "password")
       get :show, id: user.id
 
-      expect(response).to be('show')
+      expect(response).to render_template('show')
     end
 
     it "sends error message if user not found" do
-      get :show, id: -1
-      expect(response).to render_template("index")
-      expect(flash[:errors]).to be_present
+      begin
+        get :show, id: -1
+      rescue
+        ActiveRecord::RecordNotFound
+      end
+      expect(response).not_to render_template("show")
     end
   end
 end
