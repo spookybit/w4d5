@@ -25,7 +25,7 @@ feature "the log in process" do
   before(:each) do
     User.create(username: 'capybara', password: 'password')
   end
-  
+
   scenario "has a log in page" do
     visit new_session_url
     expect(page).to have_content('Login')
@@ -45,9 +45,17 @@ feature "the log in process" do
 end
 
 feature "logging out" do
+  before(:each) do
+    User.create(username: 'capybara', password: 'password')
+    visit new_session_url
+    fill_in 'username', with: 'capybara'
+    fill_in 'password', with: 'password'
+    click_on 'Submit'
+  end
 
-  scenario "begins with a logged out state"
-
-  scenario "doesn't show username on the homepage after logout"
+  scenario "doesn't show username on the homepage after logout" do
+    click_on 'logout'
+    expect(page).not_to have_content('capybara')
+  end
 
 end

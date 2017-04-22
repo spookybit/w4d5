@@ -8,6 +8,18 @@
 </head>
 <body>
 
+<header>
+  <%= current_user.username if current_user%>
+  <br>
+  <% if current_user %>
+    <%= button_to('logout', session_url, method: 'delete') %>
+  <% else %>
+    <%= button_to('login', new_session_url, method: 'get') %>
+    <%= button_to('signup', new_user_url, method: 'get') %>
+  <% end %>
+
+</header>
+
 <%= yield %>
 
 </body>

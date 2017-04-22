@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170421173315) do
+ActiveRecord::Schema.define(version: 20170421232538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "goals", force: :cascade do |t|
+    t.string   "name",                           null: false
+    t.text     "description",                    null: false
+    t.integer  "user_id",                        null: false
+    t.string   "public",      default: "public", null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.string   "fulfilled",   default: "no",     null: false
+  end
+
+  add_index "goals", ["fulfilled"], name: "index_goals_on_fulfilled", using: :btree
+  add_index "goals", ["user_id"], name: "index_goals_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "username",        null: false
